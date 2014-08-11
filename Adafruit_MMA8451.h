@@ -14,22 +14,27 @@
     @section  HISTORY
 
     v1.0  - First release
-*/
+ */
 /**************************************************************************/
+#ifndef ADAFRUIT_MMA8451_H
+#define ADAFRUIT_MMA8451_H
 
+/*
 #if ARDUINO >= 100
  #include "Arduino.h"
 #else
  #include "WProgram.h"
 #endif
+ */
 
-#include <Wire.h>
-#include <Adafruit_Sensor.h>
+#include "application.h"
+//#include <Wire.h>
+#include "Adafruit_Sensor.h"
 
 /*=========================================================================
     I2C ADDRESS/BITS
     -----------------------------------------------------------------------*/
-    #define MMA8451_DEFAULT_ADDRESS                 (0x1D)    // if A is GND, its 0x1C
+#define MMA8451_DEFAULT_ADDRESS                 (0x1D)    // if A is GND, its 0x1C
 /*=========================================================================*/
 
 #define MMA8451_REG_OUT_X_MSB     0x01
@@ -54,53 +59,51 @@
 #define MMA8451_PL_LLF            6  
 #define MMA8451_PL_LLB            7  
 
-typedef enum
-{
-  MMA8451_RANGE_8_G           = 0b10,   // +/- 8g
-  MMA8451_RANGE_4_G           = 0b01,   // +/- 4g
-  MMA8451_RANGE_2_G           = 0b00    // +/- 2g (default value)
+typedef enum {
+    MMA8451_RANGE_8_G = 0b10, // +/- 8g
+    MMA8451_RANGE_4_G = 0b01, // +/- 4g
+    MMA8451_RANGE_2_G = 0b00 // +/- 2g (default value)
 } mma8451_range_t;
 
-
 /* Used with register 0x2A (MMA8451_REG_CTRL_REG1) to set bandwidth */
-typedef enum
-{
-  MMA8451_DATARATE_800_HZ     = 0b000, //  400Hz 
-  MMA8451_DATARATE_400_HZ     = 0b001, //  200Hz
-  MMA8451_DATARATE_200_HZ     = 0b010, //  100Hz
-  MMA8451_DATARATE_100_HZ     = 0b011, //   50Hz
-  MMA8451_DATARATE_50_HZ      = 0b100, //   25Hz
-  MMA8451_DATARATE_12_5_HZ    = 0b101, // 6.25Hz
-  MMA8451_DATARATE_6_25HZ     = 0b110, // 3.13Hz
-  MMA8451_DATARATE_1_56_HZ    = 0b111, // 1.56Hz
+typedef enum {
+    MMA8451_DATARATE_800_HZ = 0b000, //  400Hz 
+    MMA8451_DATARATE_400_HZ = 0b001, //  200Hz
+    MMA8451_DATARATE_200_HZ = 0b010, //  100Hz
+    MMA8451_DATARATE_100_HZ = 0b011, //   50Hz
+    MMA8451_DATARATE_50_HZ = 0b100, //   25Hz
+    MMA8451_DATARATE_12_5_HZ = 0b101, // 6.25Hz
+    MMA8451_DATARATE_6_25HZ = 0b110, // 3.13Hz
+    MMA8451_DATARATE_1_56_HZ = 0b111, // 1.56Hz
 } mma8451_dataRate_t;
 
 class Adafruit_MMA8451 : public Adafruit_Sensor {
- public:
-  Adafruit_MMA8451(int32_t id = -1);
+public:
+    Adafruit_MMA8451(int32_t id = -1);
 
-  
-  bool       begin(uint8_t addr = MMA8451_DEFAULT_ADDRESS);
 
-  void read();
+    bool begin(uint8_t addr = MMA8451_DEFAULT_ADDRESS);
 
-  void setRange(mma8451_range_t range);
-  mma8451_range_t getRange(void);
+    void read();
 
-  void setDataRate(mma8451_dataRate_t dataRate);
-  mma8451_dataRate_t getDataRate(void);
+    void setRange(mma8451_range_t range);
+    mma8451_range_t getRange(void);
 
-  void getEvent(sensors_event_t *event);
-  void getSensor(sensor_t *sensor);
+    void setDataRate(mma8451_dataRate_t dataRate);
+    mma8451_dataRate_t getDataRate(void);
 
-  uint8_t getOrientation(void);
+    void getEvent(sensors_event_t *event);
+    void getSensor(sensor_t *sensor);
 
-  int16_t x, y, z;
-  float x_g, y_g, z_g;
+    uint8_t getOrientation(void);
 
-  void writeRegister8(uint8_t reg, uint8_t value);
- private:
-  uint8_t readRegister8(uint8_t reg);
-  int32_t _sensorID;
-  int8_t  _i2caddr;
+    int16_t x, y, z;
+    float x_g, y_g, z_g;
+
+    void writeRegister8(uint8_t reg, uint8_t value);
+private:
+    uint8_t readRegister8(uint8_t reg);
+    int32_t _sensorID;
+    int8_t _i2caddr;
 };
+#endif

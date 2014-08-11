@@ -17,15 +17,16 @@
 */
 /**************************************************************************/
 
-#include <Wire.h>
-#include <Adafruit_MMA8451.h>
-#include <Adafruit_Sensor.h>
+//#include <Wire.h>
+#include "application.h"
+#include "Adafruit_MMA8451/Adafruit_MMA8451.h"
+#include "Adafruit_MMA8451/Adafruit_Sensor.h"
 
 Adafruit_MMA8451 mma = Adafruit_MMA8451();
 
 void setup(void) {
   Serial.begin(9600);
-  
+  while (!Serial.available()) SPARK_WLAN_Loop(); //wait to connect
   Serial.println("Adafruit MMA8451 test!");
   
 
